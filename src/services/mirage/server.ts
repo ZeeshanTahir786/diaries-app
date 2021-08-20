@@ -1,9 +1,6 @@
-import { belongsTo, hasMany, Model, Response, Server } from "miragejs";
+import { belongsTo, Factory, hasMany, Model, Response, Server } from "miragejs";
 
-export const handleErrorHandlers = (
-  error: any,
-  message: "An error occured"
-) => {
+export const handleErrorHandlers = (error: any, message: string) => {
   return new Response(400, undefined, {
     data: {
       message,
@@ -26,6 +23,19 @@ export const setupServer = (env?: string): Server => {
       user: Model.extend({
         diary: hasMany(),
       }),
+    },
+    factories: {
+      user: Factory.extend({
+        username: "test",
+        password: "password",
+        email: "test@gmail.com",
+      }),
+    },
+    seeds: (server): any => {
+      server.create("user");
+    },
+    routes(): void {
+      this.urlPrefix = "https://diaries.app";
     },
   });
 };
