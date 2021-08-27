@@ -1,8 +1,9 @@
-import React from "react";
+import React, { FC } from "react";
 import { useState } from "react";
 import * as Yup from "yup";
 import { useForm } from "react-hook-form";
 import { User } from "../../../interfaces/user.interface";
+import { useAppDispatch } from "../../../store";
 
 const schema = Yup.object().shape({
   username: Yup.string()
@@ -12,10 +13,12 @@ const schema = Yup.object().shape({
   email: Yup.string().email("Please provide a valid email address (abc@xy.z)"),
 });
 
-const Auth = () => {
+const Auth: FC = () => {
   const { handleSubmit, register, setError } = useForm<User>();
   const [isLogin, setIsLogin] = useState(true);
   const [loading, setLoading] = useState(false);
+  const dispatch = useAppDispatch();
+
   return (
     <div className="auth">
       <div className="card">
