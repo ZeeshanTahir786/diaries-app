@@ -1,4 +1,6 @@
 import { belongsTo, Factory, hasMany, Model, Response, Server } from "miragejs";
+import * as diary from "./routes/diary";
+import user from "./routes/user";
 
 export const handleErrorHandlers = (error: any, message: string) => {
   return new Response(400, undefined, {
@@ -34,8 +36,21 @@ export const setupServer = (env?: string): Server => {
     seeds: (server): any => {
       server.create("user");
     },
+    // ...
     routes(): void {
       this.urlPrefix = "https://diaries.app";
+
+      this.get("/diaries/entries/:id", diary.getEntries);
+      this.get("/diaries/:id", diary.getDiaries);
+
+      this.post("/auth/login", user.login);
+      this.post("/auth/signup", user.signup);
+
+      this.post("/diaries/", diary.create);
+      this.post("/diaries/entry/:id", diary.addEntry);
+
+      this.put("/diaries/entry/:id", diary.updateEntry);
+      this.put("/diaries/:id", diary.updateDiary);
     },
   });
 };
